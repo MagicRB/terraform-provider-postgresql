@@ -18,6 +18,8 @@ require (
 	golang.org/x/oauth2 v0.10.0
 )
 
+replace github.com/lib/pq => github.com/MagicRB/libpq-go v0.0.0-20241231185331-f6e161f82f1d
+
 require (
 	cloud.google.com/go/compute v1.23.0 // indirect
 	cloud.google.com/go/compute/metadata v0.2.3 // indirect
