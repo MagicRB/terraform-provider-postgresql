@@ -220,6 +220,8 @@ func (c *Config) connParams() []string {
 		params["sslmode"] = c.SSLMode
 		if c.featureSupported(featureSSLNegotiation) {
 			params["sslnegotiation"] = c.SSLNegotiation
+		} else {
+			panic(fmt.Sprintf("sslnegotiation is set but unsupported by version %v", c.ExpectedVersion))
 		}
 		params["connect_timeout"] = strconv.Itoa(c.ConnectTimeoutSec)
 	}
