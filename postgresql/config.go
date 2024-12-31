@@ -42,6 +42,7 @@ const (
 	featureFunction
 	featureServer
 	featureView
+	featureSSLNegotiation
 )
 
 var (
@@ -115,6 +116,9 @@ var (
 		featureDatabaseOwnerRole: semver.MustParseRange(">=15.0.0"),
 
 		featureView: semver.MustParseRange(">12.0.0"),
+
+		// SSL without STARTTLS
+		featureSSLNegotiation: semver.MustParseRange(">=17.0.0"),
 	}
 )
 
@@ -168,6 +172,7 @@ type Config struct {
 	DatabaseUsername  string
 	Superuser         bool
 	SSLMode           string
+	SSLNegotiation    string
 	ApplicationName   string
 	Timeout           int
 	ConnectTimeoutSec int
@@ -213,6 +218,9 @@ func (c *Config) connParams() []string {
 	// (TLS is provided by gocloud directly)
 	if c.Scheme == "postgres" {
 		params["sslmode"] = c.SSLMode
+		if c.featureSupported(featureSSLNegotiation) {
+			params["sslnegotiation"] = c.SSLNegotiation
+		}
 		params["connect_timeout"] = strconv.Itoa(c.ConnectTimeoutSec)
 	}
 
